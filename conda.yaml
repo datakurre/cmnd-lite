@@ -1,0 +1,23 @@
+# Generated environment configuration file.
+
+# Editing this file manually can prevent the project from being
+# opened in Automation Studio.
+
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9.13
+  - pip=22.1.2
+  - jupyterlab
+  - ipywidgets
+  - jupyterlab_widgets=3.0.6
+  - pandas
+  - ipydatagrid=1.1.14
+  - ipyvuetify
+  - nodejs
+  - pip:
+    - voila==0.5.0a3
+    - jupyterlab-vim
+    - jupyterlab-bpmn
+    - jupyterlab-dmn
+    - jupyterlab-form-js
