@@ -1,0 +1,77 @@
+---
+plugins:
+  datasette-dashboards:
+    zeebe:
+      title: Zeebe
+      description: My Zeebe Dashboard
+      layout:
+      - [process-count, process-count-by]
+      filters:
+        is_running:
+          name: Running?
+          type: select
+          default: true
+          options:
+          - true
+          - false
+      charts:
+        process-count:
+          title: Processes
+          db: dbfile
+          query: >
+            SELECT count(*) FROM process_instance [[
+            WHERE (:is_running == 'True' and completed IS NULL)
+            or (:is_running == 'False' and completed IS NOT NULL)
+            ]]
+          library: metric
+          display:
+            field: count(*)
+            prefix:
+            suffix:
+        process-count-by:
+          title: Processes
+          db: dbfile
+          query: >
+            SELECT p.bpmnProcessName AS name, COUNT(*) AS amount
+            FROM process_instance pi
+            JOIN process p ON pi.processDefinition = p.key
+            [[
+              WHERE (:is_running == 'True' and completed IS NULL)
+              or (:is_running == 'False' and completed IS NOT NULL)
+            ]]
+            GROUP BY p.bpmnProcessName
+          library: vega-lite
+          display: 
+            mark: bar
+            encoding:
+              y:
+                field: name
+                type: nominal
+              x:
+                field: amount
+                type: quantitative
+databases:
+  dbfile:
+    tables:
+      form:
+        plugins:
+          datasette-graphql:
+            json_columns:
+            - schema
+      variable:
+        plugins:
+          datasette-graphql:
+            json_columns:
+            - value
+      job:
+        plugins:
+          datasette-graphql:
+            json_columns:
+            - customHeaders
+            - variables
+      decision_evaluation:
+        plugins:
+          datasette-graphql:
+            json_columns:
+            - decisionOutput
+            - evaluatedDecisions
