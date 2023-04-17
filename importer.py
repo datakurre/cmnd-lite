@@ -379,7 +379,7 @@ WHERE updated <= excluded.updated
             event["value"]["deadline"],
             event["timestamp"],
             event["timestamp"],
-            event["intent"] == "ELEMENT_COMPLETED" and event["timestamp"] or None,
+            event["intent"] == "COMPLETED" and event["timestamp"] or None,
             # ON CONFLICT
             json.dumps(event["value"]["variables"]),
             event["value"]["worker"],
@@ -391,7 +391,7 @@ WHERE updated <= excluded.updated
             event["value"]["retries"],
             event["value"]["deadline"],
             event["timestamp"],
-            event["intent"] == "ELEMENT_COMPLETED" and event["timestamp"] or None,
+            event["intent"] == "COMPLETED" and event["timestamp"] or None,
         ),
     )
 
